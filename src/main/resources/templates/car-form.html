@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Car Dealer</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+
+    <header class="fixed-top" th:insert="~{fragments/navbar}"></header>
+
+    <main>
+        <div class="container" style="margin-top: 15%">
+            <form th:method="POST" th:object="${car}">
+                <div class="row">
+                    <div class="offset-1 offset-sm-5 col-6">
+                        <h2 th:text="${heading}"></h2>
+                    </div>
+                </div>
+
+                <div id="brands" class="form-group row">
+                    <div class="offset-1 col-10 col-sm-3">
+                        <label class="form-control-label" for="brand-selector">Choose Brand:</label>
+                    </div>
+
+                    <div id="brand-selector-div" class="offset-1 col-10 col-sm-6">
+                        <select id="brand-selector" class="form-control">
+                            <option value="" selected="selected">--- Select Brand ---</option>
+                            <option th:each="brand : ${carBrands}"
+                                    th:text="${brand}" th:value="${brand}"></option>
+                        </select>
+                        <small class="form-text text-muted">
+                            Enter a <a id="show-brand-input-link" href="#">New Brand</a> if it does not exist.
+                        </small>
+                    </div>
+                </div>
+
+                <div id="brand-div" class="form-group row" style="display: none">
+                    <div id="new-brand" th:if="${newBrand} != null" th:text="${newBrand}"
+                         style="display: none">
+                    </div>
+                    <div id="selected-brand" th:if="${selectedBrand} != null" th:text="${selectedBrand}"
+                        style="display: none">
+                    </div>
+
+                    <div class="offset-1 col-10 col-sm-3">
+                        <label class="form-control-label" for="brand">Brand</label>
+                    </div>
+
+                    <div class="offset-1 col-10 col-sm-6">
+                        <input type="text" class="form-control" id="brand" value=""
+                               placeholder="--- Enter Brand ---"
+                               th:field="*{make}"
+                               th:errorclass="fieldError"/>
+                        <small class="form-text text-muted">Choose from
+                            <a id="show-select-brand-link" href="#"> existing brands</a></small>
+                        <small id="brand-error" class="text-danger"
+                               th:if="${#fields.hasErrors('make')}"
+                               th:errors="*{make}">
+                            Incorrect Make
+                        </small>
+                    </div>
+                </div>
+
+                <div id="models" class="form-group row" style="display:none">
+                    <div class="offset-1 col-10 col-sm-3">
+                        <label class="form-control-label" for="model-selector">Choose Model:</label>
+                    </div>
+
+                    <div id="model-selector-div" class="offset-1 col-10 col-sm-6">
+                        <select class="form-control" id="model-selector">
+
+                        </select>
+                        <small class="form-text text-muted">
+                            Enter a <a id="show-model-input-link" href="#">New Model</a> if it does not exist.
+                        </small>
+                    </div>
+                </div>
+
+                <div id="model-div" class="form-group row" style="display: none">
+                    <div class="offset-1 col-10 col-sm-3">
+                        <label class="form-control-label" for="model">Model</label>
+                    </div>
+
+                    <div class="offset-1 col-10 col-sm-6">
+                        <input type="text" class="form-control" id="model"
+                               th:field="*{model}"
+                               th:errorclass="fieldError"
+                               placeholder="--- Enter Model ---" />
+
+                        <small id="model-small" class="form-text text-muted">
+                            Choose from <a id="show-select-model-link" href="#">existing models</a>
+                        </small>
+
+                        <small id="model-error" class="text-danger"
+                               th:if="${#fields.hasErrors('model')}"
+                               th:errors="*{model}">
+                            Incorrect model
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="offset-1 col-10 col-sm-3">
+                        <label class="form-control-label" for="travelled-distance">Travelled Distance:</label>
+                    </div>
+
+                    <div class="offset-1 col-10 col-sm-6">
+                        <input type="number" min="0" class="form-control" id="travelled-distance"
+                               th:field="*{travelledDistance}" th:errorclass="fieldError" />
+                        <small class="form-text text-muted">Enter travelled distance in kilometers</small>
+                        <small class="text-danger"
+                               th:if="${#fields.hasErrors('travelledDistance')}"
+                               th:errors="*{travelledDistance}">
+                            Incorrect distance
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="offset-1 col-10 col-sm-3">
+                        <label class="form-control-label" for="price">Price:</label>
+                    </div>
+
+                    <div class="offset-1 col-10 col-sm-6">
+                        <input type="number" min="0" step="0.01" class="form-control" id="price"
+                               th:field="*{price}" th:errorclass="fieldError" />
+                        <small class="form-text text-muted">Enter price in euro</small>
+                        <small class="text-danger"
+                               th:if="${#fields.hasErrors('price')}"
+                               th:errors="*{price}">
+                            Incorrect price
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="offset-1 offset-sm-5 col-10 col-sm-5 col-md-5">
+                        <h5>Select Car Parts</h5>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="offset-1 col-10 col-sm-3">
+                        <label class="form-control-label" for="supplier-selector">Choose Supplier:</label>
+                    </div>
+                    <div class="offset-1 col-10 col-sm-6">
+                        <select class="form-control" id="supplier-selector">
+                            <option class="text-center" value="">--- Select Supplier ---</option>
+                            <option th:each="supplier : ${suppliers}"
+                                    th:text="${supplier.name}" th:value="${supplier.id}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="parts" class="form-group row" style="display: none">
+                    <div class="offset-1 col-10 col-sm-3">
+                        <label class="form-control-label" for="part-selector">Select Parts</label>
+                    </div>
+                    <div class="offset-1 col-10 col-sm-6">
+                        <div class="row">
+                            <div class="col-6 col-sm-7 col-md-8">
+                                <select class="form-control" id="part-selector">
+
+                                </select>
+                            </div>
+                            <div class="col-6 col-sm-5 col-md-4 text-right">
+                                <button type="button" id="add-btn" class="btn btn-outline-info w-100">Add Part</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="offset-1 col-10 col-sm-3">
+                        <label class="form-control-label">Selected Parts:</label>
+                    </div>
+                    <div id="selected-parts" class="offset-1 col-10 col-sm-6">
+                        <div th:if="${parts} != null">
+                            <div class="row" th:each="part : ${parts}" th:object="${part}">
+                                <div class="col-8">
+                                    <input type="checkbox" name="parts" th:value="|*{id} *{name}|" checked />
+                                    <span th:text="| *{name} |"></span>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <a class="btn btn-light btn-sm">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="offset-1 offset-sm-5 col-6">
+                        <input class="btn btn-success mt-1" type="submit" th:value="${heading}" />
+                        <a id="cancel-btn" class="btn btn-secondary mt-1" href="#">Cancel</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/navigation-controller.js"></script>
+    <script src="/js/car-form.js"></script>
+    <script src="/js/footer-adjust.js"></script>
+</body>
+</html>

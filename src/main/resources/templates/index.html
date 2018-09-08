@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Car Dealer</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+
+    <header class="fixed-top" th:insert="~{fragments/navbar}"></header>
+
+    <div class="container">
+        <div class="jumbotron" style="margin-top: 10%;">
+            <div th:if="${registerSuccessMessage != null}">
+                <h2 class="text-center text-success" th:text="${registerSuccessMessage}"></h2>
+            </div>
+            <div th:if="${loginSuccessMessage != null}">
+                <h2 class="text-center text-success" th:text="${loginSuccessMessage}"></h2>
+            </div>
+            <h1 class="text-center" th:text="|Welcome to Car Dealer|"></h1>
+        </div>
+        <div class="row">
+            <div th:unless="${isLoggedIn}" class="col-12 text-center">
+                <a th:href="@{/users/login}" class="btn btn-outline-success mx-1">Login</a>
+                <a th:href="@{/users/register}" class="btn btn-outline-primary mx-1">Register</a>
+            </div>
+        </div>
+    </div>
+
+    <main>
+
+    </main>
+
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/navigation-controller.js"></script>
+    <script src="/js/footer-adjust.js"></script>
+</body>
+</html>

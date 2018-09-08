@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Parts Page</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+
+    <header class="fixed-top" th:insert="~{fragments/navbar}"></header>
+
+    <div th:if="${successMessage != null}"
+         class="alert alert-success alert-dismissible float-right mx-5">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <span th:text="${successMessage}"></span>
+    </div>
+
+    <main>
+        <div class="container" style="margin-top: 10%">
+            <h2 th:text="${heading}"></h2>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>N:</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Supplier</th>
+                    <th th:if="${isLoggedIn}">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody th:each="part, iterator : ${parts}" th:object="${part}">
+                <tr>
+                    <td th:text="${iterator.index + 1}"></td>
+                    <td class="partName" th:text="*{name}"></td>
+                    <td th:text="|*{price} &euro;|"></td>
+                    <td th:text="*{quantity}"></td>
+                    <td th:text="*{supplier.name}"></td>
+                    <td th:if="${isLoggedIn}">
+                        <form th:action="@{/parts/{id}/delete (id = *{id})}" th:method="POST"
+                              class="form-inline float-right">
+                            <a class="btn btn-primary mb-1 mx-1" th:href="@{/parts/{id}/edit (id = *{id})}">Edit</a>
+                            <input type="submit" class="btn btn-danger del-btn mb-1 mx-1" value="Delete" />
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/parts-confirm-delete.js"></script>
+    <script src="/js/navigation-controller.js"></script>
+    <script src="/js/footer-adjust.js"></script>
+</body>
+</html>

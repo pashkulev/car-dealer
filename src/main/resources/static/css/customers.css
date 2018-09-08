@@ -1,0 +1,13 @@
+#sales p {
+    text-align: center;
+}
+
+.table, .title {
+    background-color: #0c5460;
+    color: white;
+}
+
+p.title {
+    border: 2px solid cadetblue;
+    border-radius: 25px;
+}

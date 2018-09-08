@@ -1,0 +1,109 @@
+<div class="container-fluid" th:fragment="navbar">
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+        <a class="navbar-brand" href="#">Car Dealer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav mr-auto">
+
+                <li id="home" class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+
+                <li id="customersMenu" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbar-drop-customers"
+                       data-toggle="dropdown">Customers
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:href="@{/customers/all/ascending}">View All Ascending</a>
+                        <a class="dropdown-item" th:href="@{/customers/all/descending}">View All Descending</a>
+                        <a th:if="${isLoggedIn}" class="dropdown-item" th:href="@{/customers/add}">Add Customer</a>
+                    </div>
+                </li>
+
+                <li id="salesMenu" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbar-drop-sales"
+                       data-toggle="dropdown">Sales
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:href="@{/sales/all}">View All</a>
+                        <a class="dropdown-item" th:href="@{/sales/discounted}">View Discounted</a>
+                        <a class="dropdown-item" th:if="${isLoggedIn}" th:href="@{/sales/add}">Add Sale</a>
+                    </div>
+                </li>
+
+                <li th:if="${isLoggedIn}" id="carsMenu" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbar-drop-cars"
+                       data-toggle="dropdown">Cars
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:href="@{/cars/all}">View All</a>
+                        <a class="dropdown-item" th:href="@{/cars/add}">Add Car</a>
+                    </div>
+                </li>
+
+                <li class="nav-item" th:unless="${isLoggedIn}" id="carsLink">
+                    <a class="nav-link" th:href="@{/cars/all}">Cars</a>
+                </li>
+
+                <li th:if="${isLoggedIn}" id="partsMenu" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbar-drop-parts"
+                       data-toggle="dropdown">Parts
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:href="@{/parts/all}">View All</a>
+                        <a class="dropdown-item" th:href="@{/parts/add}">Add Part</a>
+                    </div>
+                </li>
+
+                <li class="nav-item" th:unless="${isLoggedIn}" id="partsLink">
+                    <a class="nav-link" th:href="@{/parts/all}">Parts</a>
+                </li>
+
+                <li id="suppliersMenu" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbar-drop-suppliers"
+                       data-toggle="dropdown">Suppliers
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:href="@{/suppliers/all}">View All</a>
+                        <a class="dropdown-item" th:href="@{/suppliers/local}">Local Suppliers</a>
+                        <a class="dropdown-item" th:href="@{/suppliers/importers}">Importers</a>
+                        <a class="dropdown-item" th:if="${isLoggedIn}" th:href="@{/suppliers/add}">Add Supplier</a>
+                    </div>
+                </li>
+
+                <li class="nav-item" th:if="${isLoggedIn}" id="logsLink">
+                    <a class="nav-link" th:href="@{/logs/all}">Logs</a>
+                </li>
+            </ul>
+
+            <ul th:unless="${isLoggedIn}" class="nav navbar-nav navbar-right">
+                <li>
+                    <a th:href="@{/users/login}" class="btn btn-success btn-sm mx-1 my-1">Login</a>
+                </li>
+                <li>
+                    <a th:href="@{/users/register}" class="btn btn-primary btn-sm mx-1 my-1">Register</a>
+                </li>
+            </ul>
+
+            <ul th:if="${isLoggedIn}" class="nav navbar-nav navbar-right">
+                <!--th:href="@{/users/{username} (username=${username})}"-->
+                <li class="nav-item">
+                    <a href="#"
+                       th:text="|Hello ${username}!|" class="nav-link"></a>
+                </li>
+                <li>
+                    <a th:href="@{/users/logout}" class="btn btn-outline-light btn-sm mx-1 my-1">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+</div>

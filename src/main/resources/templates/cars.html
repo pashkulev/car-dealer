@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cars Page</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+    <header class="fixed-top" th:insert="~{fragments/navbar}"></header>
+
+    <main>
+        <div class="container" style="margin-top: 14%">
+            <div th:if="${successMessage != null}">
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <span th:text="${successMessage}"></span>
+                </div>
+            </div>
+
+            <div class="mb-2 row">
+                <div id="heading" class="h2 col-12 col-sm-4" th:text="${heading}"></div>
+                <div class="col-12 col-sm-8">
+                    <form class="form-inline float-right">
+                        <label class="form-control-label mx-2 mt-1" for="brand-selector">
+                            Filter by Brand:
+                        </label>
+                        <select id="brand-selector" class="form-control mx-2 mt-1">
+                            <option value="">--- Select Brand ---</option>
+                            <option th:each="brand : ${carBrands}" th:text="${brand}" th:value="${brand}"></option>
+                        </select>
+                        <button id="show-btn" type="button" class="btn btn-outline-dark ml-2 mt-1">Show</button>
+                    </form>
+                </div>
+            </div>
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>N:</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Travelled Distance</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody id="car-rows">
+                <tr th:each="car, iterator : ${cars}" th:object="${car}">
+                    <td th:text="${iterator.index + 1}"></td>
+                    <td th:text="*{make}"></td>
+                    <td th:text="*{model}"></td>
+                    <td th:text="|*{travelledDistance} km|"></td>
+                    <td th:text="|*{price} &euro;|"></td>
+                    <td><a class="btn btn-info float-right" th:href="@{/cars/{id}/parts (id=*{id})}">Parts Details</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/cars.js"></script>
+    <script src="/js/navigation-controller.js"></script>
+    <script src="/js/footer-adjust.js"></script>
+</body>
+</html>

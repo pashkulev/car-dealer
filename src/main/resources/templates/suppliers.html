@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Suppliers Page</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+
+    <header class="fixed-top" th:insert="~{fragments/navbar}"></header>
+
+    <div th:if="${successMessage != null}"
+         class="alert alert-success alert-dismissible float-right mx-5">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <span th:text="${successMessage}"></span>
+    </div>
+
+    <main>
+        <div class="container" style="margin-top: 10%">
+            <div class="row">
+                <div class="col-8">
+                    <h2 th:text="${heading}"></h2>
+                </div>
+                <div th:if="${isLoggedIn}" class="col-4 text-right">
+                    <a th:href="@{/suppliers/add}" class="btn btn-outline-success">New Supplier</a>
+                </div>
+            </div>
+
+            <table class="table table-light">
+                <thead>
+                <tr>
+                    <th>N:</th>
+                    <th>Name</th>
+                    <th>Importer</th>
+                    <th>Parts Count</th>
+                    <th th:if="${isLoggedIn}" class="text-center">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody th:each="supplier, iterator : ${suppliers}" th:object="${supplier}">
+                <tr th:data-id="*{id}">
+                    <td th:text="${iterator.index + 1}"></td>
+                    <td id="supplier-name" th:text="*{name}"></td>
+                    <td th:text="*{isImporter} ? 'YES' : 'NO'"></td>
+                    <td th:text="*{partsCount}"></td>
+                    <td th:if="${isLoggedIn}">
+                        <form class="form-inline float-right" th:method="POST" th:action="@{/suppliers/{id}/delete (id = *{id})}">
+                            <a class="btn btn-primary mb-1 mx-1" th:href="@{/suppliers/{id}/edit (id = *{id})}">Edit</a>
+                            <button type="submit" class="btn btn-danger del-btn mb-1"
+                                    th:formaction="|/suppliers/${supplier.id}/delete|" th:method="POST">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/navigation-controller.js"></script>
+    <script src="/js/suppliers.js"></script>
+    <script src="/js/footer-adjust.js"></script>
+</body>
+</html>

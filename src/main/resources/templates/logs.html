@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Logs Page</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+
+    <header class="fixed-top" th:insert="~{fragments/navbar}"></header>
+
+    <main>
+        <div class="container" style="margin-top: 10%">
+            <div class="row">
+                <div class="col-4">
+                    <h2 class="mx-2">Logs</h2>
+                </div>
+
+                <div id="noSuchUserMessage" style="display: none" class="col-8 alert alert-danger float-right">
+
+                </div>
+
+                <div th:if="${successMessage != null}"
+                     class="col-8 alert alert-success alert-dismissible float-right">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <span th:text="${successMessage}"></span>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-6">
+                    <form class="form-inline">
+                        <input id="username" type="text" class="form-control my-1" placeholder="Username" />
+                        <button type="button" id="search-btn" class="btn btn-primary mx-1 my-1">Search Logs</button>
+                    </form>
+                </div>
+
+                <div class="col-6">
+                    <form th:action="@{/logs/all/delete}" th:method="POST" class="form-inline float-right">
+                        <input id="clear-all-btn" type="submit" class="btn btn-warning my-1" value="Clear All Logs" />
+                    </form>
+                </div>
+            </div>
+
+            <table class="table table-light">
+                <thead>
+                    <tr>
+                        <th>N:</th>
+                        <th>User</th>
+                        <th>Operation</th>
+                        <th>Modified Table</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+
+                <tbody id="log-rows">
+                <tr th:each="log, iterator : ${logs}" th:object="${log}">
+                    <td th:text="${iterator.index + 1}"></td>
+                    <td th:text="*{userUsername}"></td>
+                    <td th:text="*{operation}"></td>
+                    <td th:text="*{modifiedTable}"></td>
+                    <td th:text="*{time}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/navigation-controller.js"></script>
+    <script src="/js/logs.js"></script>
+    <script src="/js/footer-adjust.js"></script>
+</body>
+</html>
